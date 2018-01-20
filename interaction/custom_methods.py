@@ -5,41 +5,57 @@ import frappe.desk.form.load
 
 from frappe import _
 
-@frappe.whitelist()
-def add_interaction(doc):
-	"""allow any logged user to post a comment"""
-	doc = frappe.get_doc(json.loads(doc))
-
-	if doc.doctype != "Interaction Master":
-		frappe.throw(_("This method can only be used to create a Interaction Master"), frappe.PermissionError)
-
-	doc.insert(ignore_permissions = True)
-
-	return doc.as_dict()
 
 @frappe.whitelist()
-def create_todo(owner, assigned_by, description, date,reference_name,reference_type):
+def ping():
+	print("s")
+	return 1
+# @frappe.whitelist()
+# def add_expense(exp_approver,expense_date,expense_type,description,claim_amount,sanctioned_amount,employee):
+# 	print("aas")
+# 	expense = frappe.new_doc("Expense Claim")
+# 	expense.exp_approver=exp_approver
+# 	expense.expense_date=expense_date
+# 	expense.expense_type=expense_type
+# 	expense.description=description
+# 	expense.claim_amount=claim_amount
+# 	expense.sanctioned_amount=sanctioned_amount
+# 	expense.employee=employee
+# 	expense.insert(ignore_permissions=True)
+# 	expense.insert()
+# 	frappe.msgprint("Expense added successfully!..")
+
+# @frappe.whitelist()
+# def add_expense():
+# 	expense = frappe.new_doc("Expense Claim")
+# 	expense.exp_approver=exp_approver
+# 	expense.expense_date=expense_date
+# 	expense.expense_type=expense_type
+# 	expense.description=description
+# 	expense.claim_amount=claim_amount
+# 	expense.sanctioned_amount=sanctioned_amount
+# 	expense.employee=employee
+# 	expense.insert(ignore_permissions=True)
+# 	expense.save(ignore_permissions=True)
+# 	frappe.db.commit()
+# 	return {"Expense added successfully!.."}
+
+@frappe.whitelist(allow_guest=True)
+def add_expense(exp_approver='',employee='',employee_name=''):
+	print("222222222222222222hellooooooooooooooooooooo")
 	"""allow any logged user to post toDo via interaction master"""
-	todo = frappe.new_doc("ToDo")
-	todo.owner = owner
-	todo.assigned_by = assigned_by
-	todo.description = description
-	todo.date = date
-	todo.reference_type = reference_type
-	todo.reference_name = reference_name
-	todo.insert(ignore_permissions=True)
-
-@frappe.whitelist()
-def add_expense_claim(doc):
-        doc_json=json.loads(doc)
-        emp = frappe.db.get_value("Employee",{"user_id":doc_json['responsible']},"name")
-        doc_json['employee'] = emp
-        """allow any logged user to post a comment"""
-        doc = frappe.get_doc(doc_json)
-
-        if doc.doctype != "Expense Claim":
-                frappe.throw(_("This method can only be used to create a Expense Claim"), frappe.PermissionError)
-
-        doc.insert(ignore_permissions = True)
-
-        return doc.as_dict()
+	expense = frappe.new_doc("Expense Claim")
+	print("innnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+	expense.exp_approver=exp_approver
+	# expense.expense_date=expense_date
+	# expense.expense_type=expense_type
+	# expense.description=description
+	# expense.claim_amount=claim_amount
+	# expense.sanctioned_amount=sanctioned_amount
+	expense.employee=employee
+	expense.employee_name=employee_name
+	expense.insert(ignore_permissions=True)
+	expense.save(ignore_permissions=True)
+	frappe.db.commit()
+	# frappe.msgprint("Error...............")
+	return expense
