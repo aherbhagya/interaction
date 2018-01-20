@@ -40,12 +40,12 @@ def ping():
 # 	frappe.db.commit()
 # 	return {"Expense added successfully!.."}
 
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def add_expense(exp_approver='',employee='',employee_name=''):
-	print("222222222222222222hellooooooooooooooooooooo")
+	print("hello")
 	"""allow any logged user to post toDo via interaction master"""
 	expense = frappe.new_doc("Expense Claim")
-	print("innnnnnnnnnnnnnnnnnnnnnnnnnnnnnn")
+	print("in")
 	expense.exp_approver=exp_approver
 	# expense.expense_date=expense_date
 	# expense.expense_type=expense_type
