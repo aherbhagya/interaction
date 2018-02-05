@@ -37,7 +37,7 @@ def ping():
 def create_todo(owner, assigned_by, description, date,reference_name,reference_type):
         """allow any logged user to post toDo via interaction master"""
         emp = frappe.db.get_value("ToDo",{"owner":owner, "reference_name": reference_name},"owner")
-        if not emp:
+        if emp:
                 todo = frappe.new_doc("ToDo")
                 todo.owner = owner
                 todo.assigned_by = assigned_by
@@ -46,6 +46,23 @@ def create_todo(owner, assigned_by, description, date,reference_name,reference_t
                 todo.reference_type = reference_type
                 todo.reference_name = reference_name
                 todo.insert(ignore_permissions=True)
+
+
+
+# @frappe.whitelist()
+# def create_interaction(doc):
+#         doc_json=json.loads(doc)
+#         # emp = frappe.db.get_value("Employee",{"user_id":doc_json['responsible']},"name")
+#         # doc_json['employee'] = emp
+#         """allow any logged user to post a comment"""
+#         doc = frappe.get_doc(doc_json)
+
+#         if doc.doctype != "Interaction Master":
+#                 frappe.throw(_("This method can only be used to create a Interaction Master"), frappe.PermissionError)
+
+#         doc.insert(ignore_permissions = True)
+
+#         return doc.as_dict()
 
 
 @frappe.whitelist()
